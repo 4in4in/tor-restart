@@ -1,11 +1,16 @@
 
-from fastapi import FastAPI
-from url_checker import UrlChecker
+from fastapi import FastAPI, Request
+from driver_checker import DriverChecker
 
 app = FastAPI()
 
-@app.get('/check_elibrary')
-def restart_tor():
-    checker = UrlChecker()
-    checker.check_elibrary()
-    return True
+@app.post('/check_elibrary')
+async def restart_tor(req: Request):
+    data = await req.json()
+    link = data.get('link')
+    if link:
+        checker = DriverChecker()
+        checker.check_elibrary(link)
+        return True
+    else:
+        return False
