@@ -34,7 +34,7 @@ class UrlChecker:
             print('getting elibrary')
             elib_req = self.__session.get('https://www.elibrary.ru', timeout=2)
             status = elib_req.status_code
-            if status != 200:
+            if status != 200 or 'blockedip' in elib_req.text:
                 self.restart_tor()
         print(status)
 
